@@ -22,14 +22,13 @@ class DosBotonesViewModel:ViewModel() {
     var colorBoton : LiveData<Boolean> = _colorBoton
 
     fun bloquearApp() {
-        _resultState.value = resulState.value!!.plus(1)
         //Nos permite crear una corrutina desde un ViewModel
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
                 delay(5000)
-                _resultState.value
+                resulState.value!!.plus(1)
             }
-            _resultState.value = result!!
+            _resultState.value = result
         }
     }
 
