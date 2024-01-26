@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 fun dosBotones(viewModel: DosBotonesViewModel) {
     val colorBoton: Boolean by viewModel.colorBoton.observeAsState(false)
     val resultState: Int by viewModel.resulState.observeAsState(0)
+    val estaCargando: Boolean by viewModel.estaCargando.observeAsState(false)
     Column(verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Button(
             onClick = { viewModel.cambiarColor() },
@@ -23,7 +25,8 @@ fun dosBotones(viewModel: DosBotonesViewModel) {
         ) {
             Text(text = "Cambiar boton")
         }
-        Text(text = "Respuesta de la API $resultState")
+        if (estaCargando) CircularProgressIndicator()
+        else Text(text = "Respuesta de la API $resultState")
         Button(
             onClick = { viewModel.bloquearApp() },
         ) {

@@ -20,16 +20,28 @@ class DosBotonesViewModel:ViewModel() {
     var resulState : LiveData<Int> = _resultState
     private var _colorBoton = MutableLiveData<Boolean>(false)
     var colorBoton : LiveData<Boolean> = _colorBoton
+    private val _estaCargando = MutableLiveData<Boolean>(false)
+    val estaCargando: LiveData<Boolean> = _estaCargando
 
     fun bloquearApp() {
         //Nos permite crear una corrutina desde un ViewModel
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                delay(5000)
-                resulState.value!!.plus(1)
+            try {
+                _estaCargando.value = true
+                llamarApi()
+            } catch (e: Exception) {
+                println("Error ${e.message}")
+            } finally {
+                _estaCargando.value = false
             }
-            _resultState.value = result
         }
+    }
+    private suspend fun llamarApi(){
+        val result = withContext(Dispatchers.IO) {
+            delay(5000)
+            resulState.value!!.plus(1)
+        }
+        _resultState.value = result
     }
 
     fun cambiarColor(){
